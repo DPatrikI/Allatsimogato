@@ -18,11 +18,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     private final String TAG = "MainActivity";
     ConnectivityManager connectivityManager;
     private boolean connectedToNetwork = false;
+    private final String user = "user";
+    private final String title = "title";
+    private final String id = "id";
+    private final String time_create = "time_create";
+    private final String time_update = "time_update";
 
     ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback(){
         @Override
@@ -91,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         TextView usernameTextView = findViewById(R.id.usernameTextView), passwordTextView = findViewById(R.id.passwordTextView);
 
         if (usernameTextView.getText().toString().equals("user") && passwordTextView.getText().toString().equals("pass")) {
-            loginToProfile();
+            loginToProfile("user");
         }
         else {
             Toast.makeText(this, "Wrong user or password", Toast.LENGTH_SHORT).show();
@@ -99,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void loginToProfile(){
+    private void loginToProfile(String profilename){
         Button loginButton = findViewById(R.id.loginButton);
         loginButton.setClickable(false);
 
@@ -116,11 +123,21 @@ public class MainActivity extends AppCompatActivity {
                 ( (ViewManager) progressBar.getParent()).removeView(progressBar);
                 loginButton.setClickable(true);
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+
+                JSONObject jsonObject = getJSONObject();
+                try {
+                    intent.putExtra(user, profilename);
+                    intent.putExtra(title, jsonObject.getString(title));
+                    intent.putExtra(id, String.valueOf(jsonObject.getInt(id)));
+                    intent.putExtra(time_create, jsonObject.getString(time_create));
+                    intent.putExtra(time_update, jsonObject.getString(time_update));
+                } catch (Exception e){
+                    Log.e(TAG, String.valueOf(e));
+                }
+
                 startActivity(intent);
             }
         }.start();
-
-
     }
 
     private ProgressBar addProgressBar(){
@@ -137,6 +154,23 @@ public class MainActivity extends AppCompatActivity {
         constraintSet.applyTo(constraintLayout);
 
         return progressBar;
+    }
+
+
+
+    private JSONObject getJSONObject(){
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("title", "Test user");
+            jsonObject.put("id", 121);
+            jsonObject.put("time_create", "2012-12-12T12:12:12+00:00");
+            jsonObject.put("time_update", "2018-11-11T13:41:40+00:00");
+        } catch (Exception e){
+
+        }
+
+        return jsonObject;
     }
 
 
