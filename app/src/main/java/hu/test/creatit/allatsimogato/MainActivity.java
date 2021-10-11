@@ -2,12 +2,21 @@ package hu.test.creatit.allatsimogato;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,8 +81,62 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void onLoginButtonPressed(View view){
+        onLoginButtonPressed();
+    }
+
+    private void onLoginButtonPressed(){
+        TextView usernameTextView = findViewById(R.id.usernameTextView), passwordTextView = findViewById(R.id.passwordTextView);
+
+        if (usernameTextView.getText().toString().equals("user") && passwordTextView.getText().toString().equals("pass")) {
+            loginToProfile();
+        }
+        else {
+            Toast.makeText(this, "Wrong user or password", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void loginToProfile(){
+        Button loginButton = findViewById(R.id.loginButton);
+        loginButton.setClickable(false);
+
+        ProgressBar progressBar = addProgressBar();
+
+        new CountDownTimer(3000, 10){
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                ( (ViewManager) progressBar.getParent()).removeView(progressBar);
+                loginButton.setClickable(true);
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        }.start();
 
 
+    }
+
+    private ProgressBar addProgressBar(){
+        ProgressBar progressBar = MyViews.getProgressBar(this);
+
+        ConstraintLayout constraintLayout = findViewById(R.id.mainConstraintLayout);
+        constraintLayout.addView(progressBar);
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(progressBar.getId(), ConstraintSet.BOTTOM, findViewById(R.id.usernameTextView).getId(), ConstraintSet.TOP);
+        constraintSet.connect(progressBar.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START);
+        constraintSet.connect(progressBar.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END);
+        constraintSet.applyTo(constraintLayout);
+
+        return progressBar;
     }
 
 
