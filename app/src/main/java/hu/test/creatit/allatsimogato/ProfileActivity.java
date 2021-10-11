@@ -1,12 +1,16 @@
 package hu.test.creatit.allatsimogato;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentContainerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -39,11 +43,17 @@ public class ProfileActivity extends AppCompatActivity {
         StringBuilder time_createStringBuilder = new StringBuilder();
         time_createStringBuilder.append("Regisztráció dáutma: ");
         Calendar time_createCalendar = getCalendarFromIntentString(userTime_create);
-        Log.e(TAG, time_createCalendar.getTime().toString());
+
         time_createStringBuilder.append(time_createCalendar.get(Calendar.YEAR)).append(". ")
                 .append(time_createCalendar.get(Calendar.MONTH)+1).append(". ").append(time_createCalendar.get(Calendar.DAY_OF_MONTH)).append(".");
         time_createTextView.setText(time_createStringBuilder);
 
+        setUpButtons();
+
+
+    }
+
+    private void setUpButtons(){
         Button logOutButton = findViewById(R.id.logOutButton);
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +62,13 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        Button allatsimogatoButton = findViewById(R.id.allatsimogatoButton);
+        allatsimogatoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAllatsimogatoButtonPressed();
+            }
+        });
     }
 
     //string->Calendar hackelés
@@ -72,8 +89,26 @@ public class ProfileActivity extends AppCompatActivity {
         return calendar;
     }
 
-    public void onLogOutButtonPressed(View view){
-        onLogOutButtonPressed();
+
+    private void onAllatsimogatoButtonPressed(){
+
+        /*FragmentContainerView fragmentContainerView = new FragmentContainerView(this);
+        fragmentContainerView.setId(View.generateViewId());
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        fragmentContainerView.setLayoutParams(layoutParams);
+
+        ConstraintLayout profileConstraintLayout = findViewById(R.id.profileConstraintLayout);
+        profileConstraintLayout.addView(fragmentContainerView);
+        fragmentContainerView.bringToFront();
+
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(fragmentContainerView.getId(), AllatsiomgatoFragment.class, null)
+                .commit();*/
+
+        Intent intent = new Intent(this, AllatsimogatoActivity.class);
+        startActivity(intent);
+
     }
 
     private void onLogOutButtonPressed(){

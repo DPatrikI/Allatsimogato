@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         setUpConnectivityManager();
 
-        Log.e(TAG, String.valueOf("isConnectedToNetwork: " + isConnectedToNetwork()));
 
         changeAvailabilityOfLoginButton(isConnectedToNetwork());
 
