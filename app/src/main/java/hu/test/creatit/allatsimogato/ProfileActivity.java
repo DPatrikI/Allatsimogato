@@ -1,10 +1,21 @@
 package hu.test.creatit.allatsimogato;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentContainerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+
+import java.util.Calendar;
+
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -27,7 +38,81 @@ public class ProfileActivity extends AppCompatActivity {
         String userTime_create = intent.getStringExtra(time_create);
         String userTime_update = intent.getStringExtra(time_create);
 
-        Log.e(TAG, String.valueOf(userTitle + " " + userTime_create));
+        TextView userTextView = findViewById(R.id.userTextView), time_createTextView = findViewById(R.id.time_createTextView);
+        userTextView.setText(username);
+        StringBuilder time_createStringBuilder = new StringBuilder();
+        time_createStringBuilder.append("Regisztráció dáutma: ");
+        Calendar time_createCalendar = getCalendarFromIntentString(userTime_create);
 
+        time_createStringBuilder.append(time_createCalendar.get(Calendar.YEAR)).append(". ")
+                .append(time_createCalendar.get(Calendar.MONTH)+1).append(". ").append(time_createCalendar.get(Calendar.DAY_OF_MONTH)).append(".");
+        time_createTextView.setText(time_createStringBuilder);
+
+        setUpButtons();
+
+
+    }
+
+    private void setUpButtons(){
+        Button logOutButton = findViewById(R.id.logOutButton);
+        logOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onLogOutButtonPressed();
+            }
+        });
+
+        Button allatsimogatoButton = findViewById(R.id.allatsimogatoButton);
+        allatsimogatoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAllatsimogatoButtonPressed();
+            }
+        });
+    }
+
+    //string->Calendar hackelés
+    private Calendar getCalendarFromIntentString(String calendarString){
+        Calendar calendar = Calendar.getInstance();
+
+        int year = Integer.parseInt( (((calendarString.split("T"))[0]).split("-"))[0] );
+        int month = Integer.parseInt( (((calendarString.split("T"))[0]).split("-"))[1] );
+        month --;
+        int day = Integer.parseInt( (((calendarString.split("T"))[0]).split("-"))[2] );
+
+        int hour = Integer.parseInt( ((((calendarString.split("T"))[1]).split("\\+"))[0]).split(":")[0] );
+        int minute = Integer.parseInt( ((((calendarString.split("T"))[1]).split("\\+"))[0]).split(":")[1] );
+        int sec = Integer.parseInt( ((((calendarString.split("T"))[1]).split("\\+"))[0]).split(":")[2] );
+
+        calendar.set(year, month, day, hour, minute, sec);
+
+        return calendar;
+    }
+
+
+    private void onAllatsimogatoButtonPressed(){
+
+        /*FragmentContainerView fragmentContainerView = new FragmentContainerView(this);
+        fragmentContainerView.setId(View.generateViewId());
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        fragmentContainerView.setLayoutParams(layoutParams);
+
+        ConstraintLayout profileConstraintLayout = findViewById(R.id.profileConstraintLayout);
+        profileConstraintLayout.addView(fragmentContainerView);
+        fragmentContainerView.bringToFront();
+
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(fragmentContainerView.getId(), AllatsiomgatoFragment.class, null)
+                .commit();*/
+
+        Intent intent = new Intent(this, AllatsimogatoActivity.class);
+        startActivity(intent);
+
+    }
+
+    private void onLogOutButtonPressed(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

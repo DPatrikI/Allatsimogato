@@ -14,9 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Allatsimogato">
         <activity
+            android:name=".AllatsimogatoActivity"
+            android:exported="true"/>
+        <activity
             android:name=".ProfileActivity"
-            android:exported="true"
-            android:parentActivityName=".MainActivity"/>
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
