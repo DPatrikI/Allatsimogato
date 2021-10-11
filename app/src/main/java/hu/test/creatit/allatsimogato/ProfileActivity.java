@@ -5,12 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
-import java.util.TimeZone;
+
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -43,6 +44,14 @@ public class ProfileActivity extends AppCompatActivity {
                 .append(time_createCalendar.get(Calendar.MONTH)+1).append(". ").append(time_createCalendar.get(Calendar.DAY_OF_MONTH)).append(".");
         time_createTextView.setText(time_createStringBuilder);
 
+        Button logOutButton = findViewById(R.id.logOutButton);
+        logOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onLogOutButtonPressed();
+            }
+        });
+
     }
 
     //string->Calendar hackelés
@@ -61,5 +70,14 @@ public class ProfileActivity extends AppCompatActivity {
         calendar.set(year, month, day, hour, minute, sec);
 
         return calendar;
+    }
+
+    public void onLogOutButtonPressed(View view){
+        onLogOutButtonPressed();
+    }
+
+    private void onLogOutButtonPressed(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
