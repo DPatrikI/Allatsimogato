@@ -15,6 +15,7 @@ public class AllatsiomgatoFragment extends Fragment {
 
 
     public AllatsiomgatoFragment() {
+        super(R.layout.fragment_allatsiomgato);
         // Required empty public constructor
     }
 

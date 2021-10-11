@@ -3,6 +3,7 @@ package hu.test.creatit.allatsimogato;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -30,6 +31,11 @@ public class AllatsimogatoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_allatsimogato);
+    }
+
+    public void onTovabbiAllatokButtonPressed(View view){
+        Intent intent = new Intent(this, TovabbiAllatokActivity.class);
+        startActivity(intent);
     }
 
 

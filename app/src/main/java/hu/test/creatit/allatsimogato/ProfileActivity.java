@@ -92,20 +92,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void onAllatsimogatoButtonPressed(){
 
-        /*FragmentContainerView fragmentContainerView = new FragmentContainerView(this);
-        fragmentContainerView.setId(View.generateViewId());
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        fragmentContainerView.setLayoutParams(layoutParams);
-
-        ConstraintLayout profileConstraintLayout = findViewById(R.id.profileConstraintLayout);
-        profileConstraintLayout.addView(fragmentContainerView);
-        fragmentContainerView.bringToFront();
-
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .add(fragmentContainerView.getId(), AllatsiomgatoFragment.class, null)
-                .commit();*/
-
         Intent intent = new Intent(this, AllatsimogatoActivity.class);
         startActivity(intent);
 
