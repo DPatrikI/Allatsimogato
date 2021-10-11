@@ -6,4 +6,53 @@
     android:layout_height="match_parent"
     tools:context=".AllatsimogatoActivity">
 
+    <Button
+        android:id="@+id/marhaButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:onClick="onAllatGombPressed"
+        android:text="Marha"
+        app:layout_constraintEnd_toStartOf="@+id/kacsaButton"
+        app:layout_constraintTop_toTopOf="@+id/kacsaButton" />
+
+    <Button
+        android:id="@+id/kacsaButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:onClick="onAllatGombPressed"
+        android:text="Kacsa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/kutyaButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:onClick="onAllatGombPressed"
+        android:text="Kutya"
+        app:layout_constraintStart_toEndOf="@+id/kacsaButton"
+        app:layout_constraintTop_toTopOf="@+id/kacsaButton" />
+
+    <Button
+        android:id="@+id/backButtonAllatsimogato"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:onClick="onVisszaButtonPressed"
+        android:text="Vissza"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewAllatsimogato"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
