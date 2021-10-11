@@ -91,6 +91,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onLoginButtonPressed(View view){
+        if (true){
+            //debug
+            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+
+            JSONObject jsonObject = getJSONObject();
+            try {
+                intent.putExtra(user, "user");
+                intent.putExtra(title, jsonObject.getString(title));
+                intent.putExtra(id, String.valueOf(jsonObject.getInt(id)));
+                intent.putExtra(time_create, jsonObject.getString(time_create));
+                intent.putExtra(time_update, jsonObject.getString(time_update));
+            } catch (Exception e){
+                Log.e(TAG, String.valueOf(e));
+            }
+
+            startActivity(intent);
+            return;
+        }
         onLoginButtonPressed();
     }
 

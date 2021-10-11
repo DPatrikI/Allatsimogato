@@ -5,6 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -27,7 +33,33 @@ public class ProfileActivity extends AppCompatActivity {
         String userTime_create = intent.getStringExtra(time_create);
         String userTime_update = intent.getStringExtra(time_create);
 
-        Log.e(TAG, String.valueOf(userTitle + " " + userTime_create));
+        TextView userTextView = findViewById(R.id.userTextView), time_createTextView = findViewById(R.id.time_createTextView);
+        userTextView.setText(username);
+        StringBuilder time_createStringBuilder = new StringBuilder();
+        time_createStringBuilder.append("Regisztráció dáutma: ");
+        Calendar time_createCalendar = getCalendarFromIntentString(userTime_create);
+        Log.e(TAG, time_createCalendar.getTime().toString());
+        time_createStringBuilder.append(time_createCalendar.get(Calendar.YEAR)).append(". ")
+                .append(time_createCalendar.get(Calendar.MONTH)+1).append(". ").append(time_createCalendar.get(Calendar.DAY_OF_MONTH)).append(".");
+        time_createTextView.setText(time_createStringBuilder);
 
+    }
+
+    //string->Calendar hackelés
+    private Calendar getCalendarFromIntentString(String calendarString){
+        Calendar calendar = Calendar.getInstance();
+
+        int year = Integer.parseInt( (((calendarString.split("T"))[0]).split("-"))[0] );
+        int month = Integer.parseInt( (((calendarString.split("T"))[0]).split("-"))[1] );
+        month --;
+        int day = Integer.parseInt( (((calendarString.split("T"))[0]).split("-"))[2] );
+
+        int hour = Integer.parseInt( ((((calendarString.split("T"))[1]).split("\\+"))[0]).split(":")[0] );
+        int minute = Integer.parseInt( ((((calendarString.split("T"))[1]).split("\\+"))[0]).split(":")[1] );
+        int sec = Integer.parseInt( ((((calendarString.split("T"))[1]).split("\\+"))[0]).split(":")[2] );
+
+        calendar.set(year, month, day, hour, minute, sec);
+
+        return calendar;
     }
 }
