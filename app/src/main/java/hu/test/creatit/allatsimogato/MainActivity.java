@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewManager;
 import android.widget.Button;
@@ -90,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onLoginButtonPressed(View view){
-        if (true){
+        if (false){
             //debug
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
 
@@ -159,16 +162,19 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressBar addProgressBar(){
         ProgressBar progressBar = MyViews.getProgressBar(this);
+        progressBar.setId(View.generateViewId());
 
         ConstraintLayout constraintLayout = findViewById(R.id.mainConstraintLayout);
         constraintLayout.addView(progressBar);
 
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
-        constraintSet.connect(progressBar.getId(), ConstraintSet.BOTTOM, findViewById(R.id.usernameTextView).getId(), ConstraintSet.TOP);
+        constraintSet.connect(progressBar.getId(), ConstraintSet.BOTTOM, findViewById(R.id.userPassCardView).getId(), ConstraintSet.TOP, getPxFromDp(10));
         constraintSet.connect(progressBar.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START);
         constraintSet.connect(progressBar.getId(), ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END);
         constraintSet.applyTo(constraintLayout);
+        progressBar.getLayoutParams().height = getPxFromDp(50);
+        progressBar.getLayoutParams().height = getPxFromDp(50);
 
         return progressBar;
     }
@@ -188,6 +194,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return jsonObject;
+    }
+
+    public int getPxFromDp(float dp){
+        Resources r = getResources();
+        float px = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                r.getDisplayMetrics() );
+        return  (int)px;
     }
 
 
