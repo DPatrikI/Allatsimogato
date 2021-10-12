@@ -33,7 +33,8 @@ public class MyViews {
         FrameLayout frameLayout = new FrameLayout(context);
         frameLayout.setId(View.generateViewId());
 
-        FrameLayout.LayoutParams fLayoutParams = new FrameLayout.LayoutParams(getPxFromDp(context, 300), ViewGroup.LayoutParams.WRAP_CONTENT);
+        //FrameLayout.LayoutParams fLayoutParams = new FrameLayout.LayoutParams(getPxFromDp(context, 300), ViewGroup.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams fLayoutParams = new FrameLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
         frameLayout.setLayoutParams(fLayoutParams);
 
         TextView textView = new TextView(context);
