@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private final String time_create = "time_create";
     private final String time_update = "time_update";
 
+    //ha a csatlakozott kapcsolat állapotában változás történik (lecsatlakozik vagy felcsatlakozik), akkor a changeAvailabilityOfLoginButton()-t meghívja,
+    //aminek az argumentumában megadja, hogy csatlakozva van-e
     ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback(){
         @Override
         public void onAvailable(@NonNull Network network) {
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         connectivityManager.registerDefaultNetworkCallback(networkCallback);
     }
 
+    //ez csak legelőször nézi meg, hogy csatlakozva van-e az internethez az eszköz
     private boolean isConnectedToNetwork(){
         if (connectivityManager.getActiveNetworkInfo() != null){
             connectedToNetwork = true;
@@ -93,8 +96,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onLoginButtonPressed(View view){
+
+        //ha ez true, akkor nem megy végig a bejelentkezésen (username, password, 3mp töltés), hanem egyből a ProfileActivity-re ugik (debughoz)
         if (false){
-            //debug
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
 
             JSONObject jsonObject = getJSONObject();
@@ -111,12 +115,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return;
         }
+
         onLoginButtonPressed();
     }
 
     private void onLoginButtonPressed(){
         TextView usernameTextView = findViewById(R.id.usernameTextView), passwordTextView = findViewById(R.id.passwordTextView);
 
+        //megnézi, hogy helyesek-e a megadott adatok
         if (usernameTextView.getText().toString().equals("user") && passwordTextView.getText().toString().equals("pass")) {
             loginToProfile("user");
         }
@@ -126,12 +132,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //a bejelentkezés elkezdése (ez akkor, ha helyesek voltak a megadott adatok és van netkapcsolat)
     private void loginToProfile(String profilename){
+
+        //először átállítom a bejelentkezés gombot, hogy ne lehessen ráclickelni megint
         Button loginButton = findViewById(R.id.loginButton);
         loginButton.setClickable(false);
 
+        //hozzáadom a progressbart, ami a 3mp-es töltést mutatja
         ProgressBar progressBar = addProgressBar();
 
+        //3mp-es timer:
         new CountDownTimer(3000, 10){
             @Override
             public void onTick(long l) {
@@ -140,10 +151,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+                //ha letelt a 3mp
+
+                //törlöm a progressbart
                 ( (ViewManager) progressBar.getParent()).removeView(progressBar);
+                //bejeltkezés gomb megint clickelhető
                 loginButton.setClickable(true);
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
 
+                //a profil json-ből kiszedem az adatokat és átadom az intent-nek (amit a ProfileActivity kap meg)
                 JSONObject jsonObject = getJSONObject();
                 try {
                     intent.putExtra(user, profilename);
@@ -196,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
         return jsonObject;
     }
 
+    //megkapja, hogy mekkora dp-t szeretnénk és visszaadja pixelben
     public int getPxFromDp(float dp){
         Resources r = getResources();
         float px = TypedValue.applyDimension(

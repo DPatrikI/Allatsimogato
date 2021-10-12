@@ -29,11 +29,13 @@ public class MyViews {
         return progressBar;
     }
 
+
+    //basically ezek az állatok a listában
+    //azért FrameLayout-ként csinálom meg őket, mert így a képeket normálisan tudom csinálni, hogy a kép méretétől függően legyen hely az állatok között
     static public FrameLayout getFrameLayoutWithText(Context context, String text){
         FrameLayout frameLayout = new FrameLayout(context);
         frameLayout.setId(View.generateViewId());
 
-        //FrameLayout.LayoutParams fLayoutParams = new FrameLayout.LayoutParams(getPxFromDp(context, 300), ViewGroup.LayoutParams.WRAP_CONTENT);
         FrameLayout.LayoutParams fLayoutParams = new FrameLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
         frameLayout.setLayoutParams(fLayoutParams);
 
@@ -43,6 +45,7 @@ public class MyViews {
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = Gravity.CENTER_VERTICAL;
 
+        //aláhúzza a 2. szót, ha van
         String[] textSplit = text.split(" ");
         if (textSplit.length > 1){
             StringBuilder stringBuilder = new StringBuilder();
@@ -69,6 +72,7 @@ public class MyViews {
         return frameLayout;
     }
 
+    //megkapja, hogy mekkora dp-t szeretnénk és visszaadja pixelben
     static public int getPxFromDp(Context context, float dp){
         Resources r = context.getResources();
         float px = TypedValue.applyDimension(

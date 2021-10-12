@@ -53,14 +53,17 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
         setUpAllatok();
     }
 
+    //programmatically rakom le az állatokat, hogy könnyen lehessen hozzáadni/elvenni
     private void setUpAllatok(){
 
         ConstraintLayout constraintLayout = findViewById(R.id.constraintLayoutTovabbiAllatok);
 
+        //az állatok id-ját külön tárolom az egyszerűség kedvéért, így könnyen egymáshoz tudom illeszteni őket majd
         int[] allatIds = new int[allatok.length];
         FrameLayout allat;
 
         for (int i = 0; i<allatok.length; i++){
+            //egy állat = egy FrameLayout, ami előre fel van set up-olva text-tel
             allat = MyViews.getFrameLayoutWithText(this, allatok[i]);
             constraintLayout.addView(allat);
             allatIds[i] = allat.getId();
@@ -69,10 +72,12 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
 
+        //a legelső állatot constraintLayoutTovabbiAllatok-hoz igazítom
         constraintSet.connect(allatIds[0], ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP, getPxFromDp(50));
         constraintSet.connect(allatIds[0], ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, getPxFromDp(50));
         constraintSet.connect(allatIds[0], ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, getPxFromDp(50));
 
+        //az összes többi állatot pedig az előtte hozzáadotthoz
         for (int i = 1; i<allatIds.length; i++){
             constraintSet.connect(allatIds[i], ConstraintSet.TOP, allatIds[i-1], ConstraintSet.BOTTOM, getPxFromDp(15));
             constraintSet.connect(allatIds[i], ConstraintSet.START, allatIds[i-1], ConstraintSet.START);
@@ -81,15 +86,16 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
 
         constraintSet.applyTo(constraintLayout);
 
-
-
-
+        //képek hozzáadása a 3 állathoz
         addPicToAllat(findViewById(allatIds[getIdOfAllat("sün")]), urlForSun);
         addPicToAllat(findViewById(allatIds[getIdOfAllat("fóka")]), urlForFoka);
         addPicToAllat(findViewById(allatIds[getIdOfAllat("hörcsög")]), urlForHorcsog);
 
     }
 
+    //ezt csak az egyszerűség kedvéért csináltam, hogy meg lehessen keresni az adott állat indexét az állatok tömbben,
+    //ami alapján meg tudjuk kapni az adott állat (FrameLayout) id-ját a feltöltött allatIds tömbben
+    //magyarul utólag adom hozzá a képeket, szóval akár dinamikusan is lehetne hozzáadni
     private int getIdOfAllat(String allatNeve){
         for (int i = 0; i < allatok.length; i++){
             if (allatok[i].equals(allatNeve)){
@@ -99,18 +105,23 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
         return 0;
     }
 
+    //ez hozzáadja az adott állathoz az adott képet url alapján
     private void addPicToAllat(FrameLayout allat, String url){
 
         ImageView imageView = new ImageView(this);
         imageView.setId(View.generateViewId());
 
+        //a paraméterben megkapott imageView-t átvarázsolja az url-ben megadott képre
         new DownloadImageTask((ImageView) imageView).execute(url);
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = Gravity.END;
         imageView.setLayoutParams(layoutParams);
+
+        //resize-olom, hogy ne legyen 5km széles a kép:
         resizeImageView(imageView);
 
+        //képre koppintáskor meghívom a resize-olós functiont
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,6 +134,10 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
 
 
     private void resizeImageView(ImageView imageView){
+        //30 dp-nek megfelelő magasságúra állítom a képet. Eredetileg a szélességet is át akartam állítani, hogy arányos legyen,
+        //de magától arányos lesz, úgyhogy kikommenteztem azokat a részeket
+
+
         //int originalHeight = imageView.getLayoutParams().height, originalWidth = imageView.getLayoutParams().width;
         int newHeight = getPxFromDp(30);
         //float divideBy = (float) (originalHeight/newHeight);
@@ -132,6 +147,7 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
         //imageView.getLayoutParams().width = ((int) (originalWidth/divideBy));
     }
 
+    //a képet 30dp-ről 120-ra és 120 dp-ről 30-ra animálja
     private void resizeOnTap(View imageView){
         int originalHeight = imageView.getLayoutParams().height;
 
@@ -160,6 +176,7 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
     }
 
 
+    //megkapja, hogy mekkora dp-t szeretnénk és visszaadja pixelben
     private int getPxFromDp(float dp){
         Resources r = getResources();
         float px = TypedValue.applyDimension(
@@ -170,6 +187,7 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
     }
 
 
+    //kép betöltése url alapján black magic asyncben, hogy ne kelljen rá várni
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 

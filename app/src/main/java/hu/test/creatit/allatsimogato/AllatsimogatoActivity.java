@@ -63,7 +63,10 @@ public class AllatsimogatoActivity extends AppCompatActivity {
 
 
     public void onImageViewTap(View view){
+        //hang és animáció lejátszása
+
         if (mediaPlayer != null){
+            //ha már inicializálva lett a media player, akkor reseteli
             mediaPlayer.reset();
         }
         switch (currentAnimal){
@@ -83,6 +86,7 @@ public class AllatsimogatoActivity extends AppCompatActivity {
 
     }
 
+    //az adott kép szélességét 20%-ra állítja, illetve arányosan a magasságot is
     private void resizeImage(Drawable image){
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -107,6 +111,7 @@ public class AllatsimogatoActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (mediaPlayer != null){
+            //ha inicializálva lett, akkor kilépéskor felszabadítja a media playert
             mediaPlayer.release();
         }
     }

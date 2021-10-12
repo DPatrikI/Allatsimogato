@@ -32,6 +32,8 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         Intent intent = getIntent();
+
+        //lekérem a MainActivity-ből kapott JSON adatokat
         String username = intent.getStringExtra(user);
         String userTitle = intent.getStringExtra(title);
         int userId = Integer.parseInt(intent.getStringExtra(id));
@@ -44,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
         time_createStringBuilder.append("Regisztráció dáutma: ");
         Calendar time_createCalendar = getCalendarFromIntentString(userTime_create);
 
+        //év hónap nap összerakása stringbe:
         time_createStringBuilder.append(time_createCalendar.get(Calendar.YEAR)).append(". ")
                 .append(time_createCalendar.get(Calendar.MONTH)+1).append(". ").append(time_createCalendar.get(Calendar.DAY_OF_MONTH)).append(".");
         time_createTextView.setText(time_createStringBuilder);
@@ -71,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    //string->Calendar hackelés
+    //string->Calendar hackelés (biztos elegánsabban is meg lehetne oldani :'D )
     private Calendar getCalendarFromIntentString(String calendarString){
         Calendar calendar = Calendar.getInstance();
 
@@ -98,7 +101,6 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void onLogOutButtonPressed(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        finish();
     }
 }
