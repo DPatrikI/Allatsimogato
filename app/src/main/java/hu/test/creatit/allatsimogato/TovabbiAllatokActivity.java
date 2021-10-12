@@ -41,6 +41,10 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
             "párduc", "emu", "sas", "berber majom", "fecske", "leopárd", "pingvin", "egér", "sün", "disznó", "szarvas", "őz", "csótány", "fekete rigó",
             "szentjánosbogár", "hattyú", "hangyász", "vakond", "füsti fecske", "párduc", "bolha", "denevér", "dongó", "elefánt", "fóka", "borz", "galamb", "juh", "ló"};
 
+    private final String urlForSun = "https://www.fressnapf.hu/wp-content/uploads/2017/08/FNaug28.jpg";
+    private final String urlForFoka = "https://pecszoo.hu/wp-content/uploads/2017/10/IMG_8417-1024x682.jpg";
+    private final String urlForHorcsog = "https://m.blog.hu/ha/hazmestermedve/image/.external/.thumbs/4d9a6cd526da166899020c6e8aab4212_d49afe6e3b4eb7cadfe308837303ec67.jpg";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,9 +84,9 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
 
 
 
-        addPicToAllat(findViewById(allatIds[getIdOfAllat("sün")]), "https://www.fressnapf.hu/wp-content/uploads/2017/08/FNaug28.jpg");
-        addPicToAllat(findViewById(allatIds[getIdOfAllat("fóka")]), "https://pecszoo.hu/wp-content/uploads/2017/10/IMG_8417-1024x682.jpg");
-        addPicToAllat(findViewById(allatIds[getIdOfAllat("hörcsög")]), "https://m.blog.hu/ha/hazmestermedve/image/.external/.thumbs/4d9a6cd526da166899020c6e8aab4212_d49afe6e3b4eb7cadfe308837303ec67.jpg");
+        addPicToAllat(findViewById(allatIds[getIdOfAllat("sün")]), urlForSun);
+        addPicToAllat(findViewById(allatIds[getIdOfAllat("fóka")]), urlForFoka);
+        addPicToAllat(findViewById(allatIds[getIdOfAllat("hörcsög")]), urlForHorcsog);
 
     }
 
