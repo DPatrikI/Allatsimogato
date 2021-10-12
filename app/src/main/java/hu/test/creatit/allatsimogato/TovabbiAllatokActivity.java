@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +22,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
 import android.webkit.WebResourceRequest;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -104,18 +107,52 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
         imageView.setLayoutParams(layoutParams);
         resizeImageView(imageView);
 
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resizeOnTap(view);
+            }
+        });
+
         allat.addView(imageView);
     }
 
 
     private void resizeImageView(ImageView imageView){
         //int originalHeight = imageView.getLayoutParams().height, originalWidth = imageView.getLayoutParams().width;
-        int newHeight = getPxFromDp(100);
+        int newHeight = getPxFromDp(30);
         //float divideBy = (float) (originalHeight/newHeight);
 
         imageView.getLayoutParams().height = newHeight;
 
         //imageView.getLayoutParams().width = ((int) (originalWidth/divideBy));
+    }
+
+    private void resizeOnTap(View imageView){
+        int originalHeight = imageView.getLayoutParams().height;
+
+        ValueAnimator valueAnimator;
+
+        if (originalHeight == getPxFromDp(30)){
+            valueAnimator = ValueAnimator.ofInt(originalHeight, getPxFromDp(120)).setDuration(500);
+        }
+        else {
+            valueAnimator = ValueAnimator.ofInt(originalHeight, getPxFromDp(30)).setDuration(500);
+        }
+
+
+        valueAnimator.setInterpolator(new OvershootInterpolator());
+
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                imageView.getLayoutParams().height = (int) valueAnimator.getAnimatedValue();
+                imageView.requestLayout();
+            }
+        });
+
+        valueAnimator.start();
+
     }
 
 
