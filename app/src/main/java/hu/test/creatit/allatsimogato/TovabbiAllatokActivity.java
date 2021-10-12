@@ -64,10 +64,12 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
 
         constraintSet.connect(allatIds[0], ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP, getPxFromDp(50));
         constraintSet.connect(allatIds[0], ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START, getPxFromDp(50));
+        constraintSet.connect(allatIds[0], ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END, getPxFromDp(50));
 
         for (int i = 1; i<allatIds.length; i++){
             constraintSet.connect(allatIds[i], ConstraintSet.TOP, allatIds[i-1], ConstraintSet.BOTTOM, getPxFromDp(15));
             constraintSet.connect(allatIds[i], ConstraintSet.START, allatIds[i-1], ConstraintSet.START);
+            constraintSet.connect(allatIds[i], ConstraintSet.END, allatIds[i-1], ConstraintSet.END);
         }
 
         constraintSet.applyTo(constraintLayout);
