@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +22,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
 import android.webkit.WebResourceRequest;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -37,6 +40,10 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
     private final String[] allatok = {"macska", "barna medve", "hörcsög", "kukac", "nyúl", "hangya", "szöcske", "rinocérosz", "bengáli tigris", "oroszlán",
             "párduc", "emu", "sas", "berber majom", "fecske", "leopárd", "pingvin", "egér", "sün", "disznó", "szarvas", "őz", "csótány", "fekete rigó",
             "szentjánosbogár", "hattyú", "hangyász", "vakond", "füsti fecske", "párduc", "bolha", "denevér", "dongó", "elefánt", "fóka", "borz", "galamb", "juh", "ló"};
+
+    private final String urlForSun = "https://www.fressnapf.hu/wp-content/uploads/2017/08/FNaug28.jpg";
+    private final String urlForFoka = "https://pecszoo.hu/wp-content/uploads/2017/10/IMG_8417-1024x682.jpg";
+    private final String urlForHorcsog = "https://m.blog.hu/ha/hazmestermedve/image/.external/.thumbs/4d9a6cd526da166899020c6e8aab4212_d49afe6e3b4eb7cadfe308837303ec67.jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +84,9 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
 
 
 
-        addPicToAllat(findViewById(allatIds[getIdOfAllat("sün")]), "https://www.fressnapf.hu/wp-content/uploads/2017/08/FNaug28.jpg");
-        addPicToAllat(findViewById(allatIds[getIdOfAllat("fóka")]), "https://pecszoo.hu/wp-content/uploads/2017/10/IMG_8417-1024x682.jpg");
-        addPicToAllat(findViewById(allatIds[getIdOfAllat("hörcsög")]), "https://m.blog.hu/ha/hazmestermedve/image/.external/.thumbs/4d9a6cd526da166899020c6e8aab4212_d49afe6e3b4eb7cadfe308837303ec67.jpg");
+        addPicToAllat(findViewById(allatIds[getIdOfAllat("sün")]), urlForSun);
+        addPicToAllat(findViewById(allatIds[getIdOfAllat("fóka")]), urlForFoka);
+        addPicToAllat(findViewById(allatIds[getIdOfAllat("hörcsög")]), urlForHorcsog);
 
     }
 
@@ -104,18 +111,52 @@ public class TovabbiAllatokActivity extends AppCompatActivity {
         imageView.setLayoutParams(layoutParams);
         resizeImageView(imageView);
 
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resizeOnTap(view);
+            }
+        });
+
         allat.addView(imageView);
     }
 
 
     private void resizeImageView(ImageView imageView){
         //int originalHeight = imageView.getLayoutParams().height, originalWidth = imageView.getLayoutParams().width;
-        int newHeight = getPxFromDp(100);
+        int newHeight = getPxFromDp(30);
         //float divideBy = (float) (originalHeight/newHeight);
 
         imageView.getLayoutParams().height = newHeight;
 
         //imageView.getLayoutParams().width = ((int) (originalWidth/divideBy));
+    }
+
+    private void resizeOnTap(View imageView){
+        int originalHeight = imageView.getLayoutParams().height;
+
+        ValueAnimator valueAnimator;
+
+        if (originalHeight == getPxFromDp(30)){
+            valueAnimator = ValueAnimator.ofInt(originalHeight, getPxFromDp(120)).setDuration(500);
+        }
+        else {
+            valueAnimator = ValueAnimator.ofInt(originalHeight, getPxFromDp(30)).setDuration(500);
+        }
+
+
+        valueAnimator.setInterpolator(new OvershootInterpolator());
+
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                imageView.getLayoutParams().height = (int) valueAnimator.getAnimatedValue();
+                imageView.requestLayout();
+            }
+        });
+
+        valueAnimator.start();
+
     }
 
 
